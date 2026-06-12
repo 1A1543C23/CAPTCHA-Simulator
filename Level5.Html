@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第5关：2025年高考题</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .game-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* 图片样式 */
+        .question-img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            /* 如果图片加载失败显示的占位符样式 */
+            min-height: 150px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            background-color: #fafafa;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px 15px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 60px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+        }
+
+        button {
+            padding: 10px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        .success { color: #4CAF50; }
+        .error { color: #ff4d4d; }
+
+        /* 胜利后的跳转按钮（隐藏状态） */
+        #next-btn {
+            display: none;
+            margin-top: 20px;
+            background-color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h2>第 5 关：2025年高考题</h2>
+    
+    <!-- 这里放置你的图片 -->
+    <!-- 请将 src 属性改为你实际的图片路径或URL -->
+    <img src="Level5.jpg" alt="数学题目" class="question-img" id="q-img">
+
+    <div class="instruction">请在下方输入正确选项 (A/B/C/D)：</div>
+    <br>
+
+    <div class="input-group">
+        <input type="text" id="answer-input" maxlength="1" placeholder="?">
+        <button onclick="checkAnswer()">提交</button>
+    </div>
+
+    <div id="message"></div>
+    
+    <!-- 通关后出现的按钮 -->
+    <button id="next-btn" onclick="window.location.href='rest.html'">点击进入休息区</button>
+
+</div>
+
+<script>
+    function checkAnswer() {
+        // 获取输入并转为大写，防止用户输入小写 c
+        const inputVal = document.getElementById('answer-input').value.trim().toUpperCase();
+        const msgDiv = document.getElementById('message');
+        const nextBtn = document.getElementById('next-btn');
+
+        if (inputVal === 'C') {
+            // 答对了
+            msgDiv.textContent = "正确 ";
+            msgDiv.className = "success";
+            
+            // 显示通关按钮
+            nextBtn.style.display = "inline-block";
+            
+            // 可选：禁用输入框防止乱改
+            document.getElementById('answer-input').disabled = true;
+        } else {
+            // 答错了
+            if(inputVal === "") {
+                msgDiv.textContent = "请输入答案";
+            } else {
+                msgDiv.textContent = "不对";
+            }
+            msgDiv.className = "error";
+            nextBtn.style.display = "none";
+        }
+    }
+
+    // 增加一个按回车键也能提交的功能
+    document.getElementById("answer-input").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            checkAnswer();
+        }
+    });
+</script>
+
+</body>
+</html>

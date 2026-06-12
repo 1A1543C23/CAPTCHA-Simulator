@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        /* 全局样式：黑底白字，居中显示 */
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* 防止滚动条出现 */
+        }
+
+        /* 主容器：模仿你截图里的绿色边框盒子 */
+        .container {
+            border: 2px solid #00ff00; /* 荧光绿边框 */
+            border-radius: 10px;
+            padding: 40px 20px;
+            width: 85%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); /* 微微发光的特效 */
+            background-color: #0a0a0a;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 22px;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        /* 验证按钮区域 */
+        .verify-btn {
+            background-color: #f9f9f9;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 15px;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            position: relative;
+            user-select: none;
+        }
+
+        /* 按钮左侧的小方框（模仿复选框） */
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #c1c1c1;
+            border-radius: 2px;
+            background: #fff;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 选中后的对勾样式 */
+        .checkbox.checked {
+            border-color: #4CAF50;
+            background-color: #4CAF50;
+        }
+        
+        .checkbox.checked::after {
+            content: '✔';
+            color: white;
+            font-size: 16px;
+        }
+
+        /* 鼠标悬停效果 */
+        .verify-btn:hover {
+            border-color: #b3b3b3;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* 点击时的按压效果 */
+        .verify-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 加载动画（可选，增加真实感） */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 标题 -->
+        <h2>人机验证第1关</h2>
+        
+        <!-- 验证按钮 -->
+        <div class="verify-btn" id="robotCheck" onclick="startVerify()">
+            <div class="checkbox" id="checkBox"></div>
+            <div class="spinner" id="spinner"></div>
+            <span id="btnText">我不是机器人</span>
+        </div>
+    </div>
+
+    <script>
+        let isVerifying = false;
+
+        function startVerify() {
+            if (isVerifying) return; // 防止重复点击
+            isVerifying = true;
+
+            const btnText = document.getElementById('btnText');
+            const checkBox = document.getElementById('checkBox');
+            const spinner = document.getElementById('spinner');
+
+            // 1. 改变UI状态：显示加载中
+            btnText.innerText = "正在验证...";
+            checkBox.style.display = 'none';
+            spinner.style.display = 'block';
+
+            // 2. 模拟验证过程（延迟1秒，显得更真实）
+            setTimeout(() => {
+                // 3. 验证成功：显示对勾
+                spinner.style.display = 'none';
+                checkBox.style.display = 'flex';
+                checkBox.classList.add('checked');
+                btnText.innerText = "验证通过";
+                btnText.style.color = "#4CAF50";
+
+                // 4. 再次延迟0.5秒后跳转
+                setTimeout(() => {
+                    // === 核心跳转逻辑 ===
+                    // 这里假设你的下一关文件名叫 Level2.html
+                    // 如果你的文件名不同，请修改引号里的内容
+                    window.location.href = 'Level2.html'; 
+                    
+                    // 如果你想跳转到外部网站，可以改成：
+                    // window.location.href = 'https://www.baidu.com';
+                }, 800);
+
+            }, 1000); 
+        }
+    </script>
+</body>
+</html>

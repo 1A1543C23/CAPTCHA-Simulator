@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>第2关：合成钻石镐</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #222; color: #fff; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; user-select: none; text-align: center; }
+        
+        .craft-area { display: grid; grid-template-columns: repeat(3, 60px); gap: 5px; margin: 20px auto; background: #8B4513; padding: 10px; border-radius: 5px; width: fit-content;}
+        .slot { width: 60px; height: 60px; background: #5c2e0b; border: 2px solid #3e1f07; display: flex; justify-content: center; align-items: center; font-size: 30px; cursor: pointer; transition: 0.2s;}
+        .slot:hover { background: #7a3d0f; }
+        .slot.selected { border-color: #fff; box-shadow: 0 0 10px #fff; } /* 选中工作台格子的高亮 */
+
+        .inventory { display: flex; gap: 15px; justify-content: center; margin-bottom: 20px; }
+        .inv-item { width: 60px; height: 60px; background: #444; border: 2px solid #666; display: flex; justify-content: center; align-items: center; font-size: 30px; cursor: pointer; transition: 0.2s;}
+        .inv-item:hover { background: #555; }
+        .inv-item.selected { border-color: #55FFFF; box-shadow: 0 0 10px #55FFFF; } /* 选中物品的高亮 */
+
+        button { padding: 10px 30px; background: #55FF55; color: #000; border: none; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px;}
+        .next-btn { display: none; margin-top: 20px; background: #8a2be2; color: #fff; font-size: 18px; padding: 10px 30px; text-decoration: none; border-radius: 4px; }
+        p.hint { color: #aaa; margin-bottom: 10px; height: 20px; font-size: 14px;} /* 操作提示文字 */
+    </style>
+</head>
+<body>
+    <div>
+        <h2>第2关：合成钻石镐</h2>
+        <p class="hint" id="hintText">请先点击下方的材料，再点击工作台放置</p>
+        
+        <!-- 物品栏 -->
+        <div class="inventory">
+            <div class="inv-item" data-item="diamond" onclick="selectItem(this)">💎</div>
+            <div class="inv-item" data-item="stick" onclick="selectItem(this)">🪵</div>
+        </div>
+
+        <!-- 3x3 工作台 -->
+        <div class="craft-area" id="craftGrid"></div>
+
+        <button onclick="craftItem()">合成！</button>
+        <br>
+        <a href="level3.html" class="next-btn" id="nextBtn">前往第3关 ➡️</a>
+    </div>
+
+<script>
+    let selectedItem = null; // 当前鼠标上“拿着”的物品
+
+    // 1. 初始化 3x3 工作台
+    const craftGrid = document.getElementById('craftGrid');
+    for (let i = 0; i < 9; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'slot';
+        slot.dataset.index = i;
+        
+        // 点击工作台格子：放入物品 或 清空物品
+        slot.onclick = function() {
+            if (selectedItem) {
+                // 如果手里有东西，就放进去
+                this.innerHTML = selectedItem === 'diamond' ? '💎' : '🪵';
+                this.dataset.item = selectedItem;
+                updateHint("放置成功！继续放置或点击合成。");
+                clearSelection();
+            } else if (this.dataset.item) {
+                // 如果手里没东西，且格子里有东西，就拿出来（清空）
+                this.innerHTML = '';
+                this.dataset.item = '';
+                updateHint("已移除该物品。");
+            }
+        };
+        craftGrid.appendChild(slot);
+    }
+
+    // 2. 点击物品栏选取材料
+    function selectItem(element) {
+        clearSelection(); // 清除之前的选中状态
+        selectedItem = element.dataset.item;
+        element.classList.add('selected');
+        updateHint(`已选中：${selectedItem === 'diamond' ? '钻石' : '木棍'}，请点击工作台格子放置`);
+    }
+
+    // 3. 清除选中状态
+    function clearSelection() {
+        selectedItem = null;
+        document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+    }
+
+    // 4. 更新提示文字
+    function updateHint(text) {
+        document.getElementById('hintText').innerText = text;
+    }
+
+    // 5. 合成判定逻辑
+    function craftItem() {
+        const slots = document.querySelectorAll('.slot');
+        let topHasDiamond = false;
+        let bottomHasStick = false;
+        
+        slots.forEach(s => {
+            const index = parseInt(s.dataset.index);
+            if (index < 6 && s.dataset.item === 'diamond') topHasDiamond = true;
+            if (index >= 3 && s.dataset.item === 'stick') bottomHasStick = true;
+        });
+
+        if (topHasDiamond && bottomHasStick) {
+            alert("合成成功");
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        } else {
+            alert("这不是钻石镐");
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>第3关：前方施工</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #222; color: #fff; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; user-select: none; text-align: center; }
+        .wall-grid { display: grid; grid-template-columns: repeat(3, 70px); gap: 5px; margin: 20px auto; justify-content: center;}
+        .brick { width: 70px; height: 70px; background: #8B4513; border: 2px solid #5c2e0b; cursor: pointer; transition: background 0.1s; display: flex; justify-content: center; align-items: center; font-size: 14px; color: #fff;}
+        .brick:hover { background: #a0522d; }
+        .brick.dug { background: #222; border: 2px dashed #444; cursor: default; color: #555;}
+        .next-btn { display: none; padding: 15px 30px; background: #55FF55; color: #000; font-size: 20px; border: none; cursor: pointer; font-weight: bold; text-decoration: none; animation: pulse 1s infinite; margin-top: 20px;}
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        p.hint { color: #aaa; margin-bottom: 10px; height: 20px; font-size: 14px;}
+    </style>
+</head>
+<body>
+    <div>
+        <h2>第3关：前方施工</h2>
+        <p class="hint" id="hintText">用你上一关拿到的钻石镐挖开这堵墙！(点击方块)</p>
+        <div class="wall-grid" id="wallGrid"></div>
+        <a href="level4.html" class="next-btn" id="nextBtn">前往第4关 ➡️</a>
+    </div>
+
+<script>
+    const grid = document.getElementById('wallGrid');
+    let dugCount = 0;
+
+    // 初始化 3x3 砖墙
+    for (let i = 0; i < 9; i++) {
+        const brick = document.createElement('div');
+        brick.className = 'brick';
+        brick.innerText = '砖块';
+        
+        // 简单粗暴：点击直接挖掉
+        brick.onclick = function() {
+            if (this.classList.contains('dug')) return;
+            
+            this.classList.add('dug');
+            this.innerText = '';
+            dugCount++;
+            document.getElementById('hintText').innerText = "挖掉了一块";
+            
+            if (dugCount >= 5) {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+                document.getElementById('hintText').innerText = "墙被挖穿了！";
+            }
+        };
+        
+        grid.appendChild(brick);
+    }
+</script>
+</body>
+</html>
